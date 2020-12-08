@@ -1,4 +1,6 @@
 require("dotenv").config();
+import authRoute from "./routes/auth.route"
+
 const express = require("express");
 const morgan = require("morgan");
 const bodyparser = require("body-parser");
@@ -15,13 +17,40 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(morgan("dev"));
 
+const db = require("./models/index");
+const Role = db.roles;
+
+
+db.sequelizeObj.sync({ force: true }).then(() => {
+  console.log("Reiniciando la db y creando roles");
+  definirRoles();
+});
+
+function definirRoles() {
+  Role.create({
+    idRol: 1,
+    nombreRol: "user"
+  });
+
+  Role.create({
+    idRol: 2,
+    nombreRol: "moderador"
+  });
+
+  Role.create({
+    idRol: 3,
+    nombreRol: "admin"
+  });
+}
+
 // route middlewares
 
 app.get("/", (req, res) => {
   res.json({
     estado: true,
-    mensaje: "funciona!",
+    mensaje: "funciona!"
   });
 });
+app.use("/api/auth",authRoute);
 
 module.exports = app;
