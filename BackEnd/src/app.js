@@ -1,6 +1,6 @@
 require("dotenv").config();
-import authRoute from "./routes/auth.route"
-
+import authRoute from "./routes/auth.route";
+import  usuarioRoute from "./routes/usuario.route";
 const express = require("express");
 const morgan = require("morgan");
 const bodyparser = require("body-parser");
@@ -52,5 +52,6 @@ app.get("/", (req, res) => {
   });
 });
 app.use("/api/auth",authRoute);
+app.use("/api/accesos",usuarioRoute);
 
 module.exports = app;
