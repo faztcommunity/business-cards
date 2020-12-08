@@ -1,0 +1,9 @@
+{
+    "nombres":"juan jose",
+    "apellidos":"perez lopez",
+    "usuario":"loper100_",
+    "correo": "lopez@gmail.com",
+    "clave": "1234",
+    "rol":["admin"] 
+
+}
