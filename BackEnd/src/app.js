@@ -21,11 +21,12 @@ const db = require("./models/index");
 const Role = db.roles;
 
 
-db.sequelizeObj.sync({ force: true }).then(() => {
+db.sequelizeObj.sync({ force: !true }).then(() => {
   console.log("Reiniciando la db y creando roles");
-  definirRoles();
+  
 });
-
+definirRoles();
+  
 function definirRoles() {
   Role.create({
     idRol: 1,
