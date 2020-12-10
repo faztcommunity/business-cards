@@ -1,5 +1,5 @@
 const db = require("../models");
-const usuario = db.usuario;
+const usuario = db.usuarios;
 
 export const allAccess = (req, res) => {
   res.status(200).send("Conteniod publico.");
@@ -21,10 +21,10 @@ export const obtenerUsuarioById = (req, res) => {
   const idUsuario = req.params.id;
   usuario
     .findByPk(idUsuario)
-    .then(usuario => {
+    .then((usuario) => {
       res.json(usuario);
     })
-    .catch(err => {
+    .catch((err) => {
       res
         .status(500)
         .send({ message: "Error al obtener usuario con id" + idUsuario });
@@ -36,16 +36,16 @@ export const eliminarUsuario = (req, res) => {
 
   usuario
     .destroy({
-      where: { idUsuario: id }
+      where: { idUsuario: id },
     })
-    .then(numRegistro => {
+    .then((numRegistro) => {
       if (numRegistro == 1) {
         res.json({ message: "Usuario elimindo" });
       } else {
         res.status(404).send({ message: "Usuario no encontrado" });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({ message: err.message });
     });
 };

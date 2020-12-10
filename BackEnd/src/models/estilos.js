@@ -16,6 +16,14 @@ module.exports = function(sequelize, DataTypes) {
     plantilla: {
       type: DataTypes.STRING(45),
       allowNull: true
+    },
+    idEstado: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'estados',
+        key: 'idEstado'
+      }
     }
   }, {
     sequelize,
@@ -29,6 +37,11 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "idEstilo" },
         ]
+      },
+      {
+        name: "fk_estilos_estados1_idx",
+        using: "BTREE",
+        fields: [{ name: "idEstado" }],
       },
     ]
   });
