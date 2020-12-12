@@ -7,6 +7,8 @@ const cors = require("cors");
 import authRoute from "./routes/auth.route";
 import usuarioRoute from "./routes/usuario.route";
 import redesRoute from "./routes/redes.route";
+import estilosRoute from "./routes/estilos.route";
+import tarjetasRoute from "./routes/tarjetas.route";
 
 const app = express();
 
@@ -76,5 +78,7 @@ app.use("/api/accesos", usuarioRoute);
 //Rutas [redes]
 
 app.use("/api/redes", redesRoute);
+app.use("/api/estilos", estilosRoute);
+app.use("/api/tarjetas", tarjetasRoute);
 
 module.exports = app;
