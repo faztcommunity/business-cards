@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const Usuario = db.usuario
-const rol = db.roles;
+const Rol = db.roles;
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -19,14 +19,17 @@ export const singUp = (req, res) => {
     })
     .then(usuario => {
       if (req.body.rol) {
-        rol
-          .findAll({
+        Rol.findAll({
             where: {
               nombreRol: req.body.rol
             }
           })
           .then(rol => {
             usuario.setRoles(rol).then(() => {
+              for(let i=0; i<10;i++){
+                console.log(rol)
+              
+              }
               res.json({ message: "Usuario registrado correctamente" });
             });
           });
