@@ -44,15 +44,14 @@ db.usuario.belongsToMany(db.roles, {
 });
 
 
-
 db.redesTarjeta.belongsTo(db.redes, { foreignKey: "idRed"});
 db.redes.hasMany(db.redesTarjeta, { foreignKey: "idRed"});
 db.redesTarjeta.belongsTo(db.tarjetas, { foreignKey: "idTarjeta"});
 db.tarjetas.hasMany(db.redesTarjeta, { foreignKey: "idTarjeta"});
-db.rolesUsuario.belongsTo(db.usuario, { foreignKey: "idUsuario"});
-db.usuario.hasMany(db.rolesUsuario, { foreignKey: "idUsuario"});
-db.rolesUsuario.belongsTo(db.roles, { foreignKey: "idRol"});
-db.roles.hasMany(db.rolesUsuario, { foreignKey: "idRol"});
+//db.rolesUsuario.belongsTo(db.usuario, { foreignKey: "idUsuario"});
+//db.usuario.hasMany(db.rolesUsuario, { foreignKey: "idUsuario"});
+//db.rolesUsuario.belongsTo(db.roles, { foreignKey: "idRol"});
+//db.roles.hasMany(db.rolesUsuario, { foreignKey: "idRol"});
 db.tarjetas.belongsTo(db.usuario, { foreignKey: "idUsuario"});
 db.usuario.hasMany(db.tarjetas, { foreignKey: "idUsuario"});
 db.tarjetas.belongsTo(db.estilos, { foreignKey: "idEstilo"});

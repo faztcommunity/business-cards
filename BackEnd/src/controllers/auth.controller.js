@@ -19,6 +19,7 @@ export const singUp = (req, res) => {
     })
     .then(usuario => {
       if (req.body.rol) {
+
         Rol.findAll({
             where: {
               nombreRol: req.body.rol
@@ -26,10 +27,7 @@ export const singUp = (req, res) => {
           })
           .then(rol => {
             usuario.setRoles(rol).then(() => {
-              for(let i=0; i<10;i++){
-                console.log(rol)
               
-              }
               res.json({ message: "Usuario registrado correctamente" });
             });
           });

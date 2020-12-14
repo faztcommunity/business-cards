@@ -30,7 +30,7 @@ definirRoles();
 function definirRoles() {
   Role.create({
     idRol: 1,
-    nombreRol: "user"
+    nombreRol: "usuario"
   });
 
   Role.create({
