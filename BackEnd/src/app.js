@@ -26,11 +26,11 @@ const role = db.roles;
 const estados = db.estados;
 
 //Lo comente para que no se hiciera en todo momento y le cambie de orden
-/*db.sequelizeObj.sync({ force: true }).then(() => {
-  console.log("Reiniciando la db, creando roles y estados");
-  definiendoEstados();
-  definirRoles();
-});*/
+// db.sequelizeObj.sync({ force: true }).then(() => {
+//   console.log("Reiniciando la db, creando roles y estados");
+//   definiendoEstados();
+//   definirRoles();
+// });
 
 function definiendoEstados() {
   estados.create({
