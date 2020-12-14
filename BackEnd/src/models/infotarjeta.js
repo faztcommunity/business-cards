@@ -9,6 +9,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    nombreInfo: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
     cargo: {
       type: DataTypes.STRING(45),
       allowNull: true
@@ -36,6 +40,14 @@ module.exports = function(sequelize, DataTypes) {
     imageEmpresa: {
       type: DataTypes.STRING(45),
       allowNull: true
+    },
+    idUsuario: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'usuarios',
+        key: 'idUsuario'
+      }
     }
   }, {
     sequelize,
@@ -48,6 +60,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "idInfoTarjeta" },
+        ]
+      },
+      {
+        name: "fk_infoTarjeta_usuarios1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "idUsuario" },
         ]
       },
     ]
