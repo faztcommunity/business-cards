@@ -1,8 +1,8 @@
 module.exports = {
-  HOST: "localhost",
-  DB: "tarjetero",
-  PASSWORD: "",
-  USER: "root",
+  HOST: "freedb.tech",
+  DB: "freedbtech_tarjetero",
+  PASSWORD: "tarjetero_password",
+  USER: "freedbtech_user_tarjetero",
   dialect: "mysql",
   pool: {
     max: 5,
