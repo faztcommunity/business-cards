@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
 
   tarjetaBody = {
     nombreTarjeta: req.body.nombreTarjeta,
-    description: req.body.description,
+    descripcion: req.body.descripcion,
     idUsuario: req.body.idUsuario,
     idEstilo: req.body.idEstilo,
     idInfoTarjeta: infoTarjetaBody.idInfoTarjeta,
