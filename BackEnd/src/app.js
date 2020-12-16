@@ -63,7 +63,6 @@ function definirRoles() {
     idEstado: 1,
   });
 }
-
 // route middlewares
 app.get("/", (req, res) => {
   res.json({
