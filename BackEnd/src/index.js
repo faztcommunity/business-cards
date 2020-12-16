@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 const app = require("./app");
 
 // iniciar server
