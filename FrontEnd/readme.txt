@@ -1,1 +1,0 @@
-# Tarjetas de Presentación - Frontend
