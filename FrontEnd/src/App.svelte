@@ -1,13 +1,20 @@
 <script>
+  import { Router, Route } from 'svelte-routing'
   import Header from '@components/Header'
-  import Home from '@components/Home.svelte'
+  import Home from '@pages/Home.svelte'
   import Footer from '@components/Footer.svelte'
+
+  export let url = ''
 </script>
 
-<Header />
+<Router url="{url}">
+  <Header />
 
-<main>
-  <Home />
-</main>
+  <main>
+    <Route path="/">
+      <Home />
+    </Route>
+  </main>
 
-<Footer />
+  <Footer />
+</Router>

@@ -46,6 +46,10 @@ export default {
           find: '@components',
           replacement: path.resolve(projectRootDir, 'src/components'),
         },
+        {
+          find: '@pages',
+          replacement: path.resolve(projectRootDir, 'src/pages'),
+        },
       ],
       customResolver,
     }),
