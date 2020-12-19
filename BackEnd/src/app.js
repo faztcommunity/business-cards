@@ -1,6 +1,6 @@
 require("dotenv").config();
 import authRoute from "./routes/auth.route";
-import  usuarioRoute from "./routes/usuario.route";
+import usuarioRoute from "./routes/usuario.route";
 const express = require("express");
 const morgan = require("morgan");
 const bodyparser = require("body-parser");
@@ -20,13 +20,11 @@ app.use(morgan("dev"));
 const db = require("./models/index");
 const Role = db.roles;
 
-
 db.sequelizeObj.sync({ force: !true }).then(() => {
   console.log("Reiniciando la db y creando roles");
-  
 });
 definirRoles();
-  
+
 function definirRoles() {
   Role.create({
     idRol: 1,
@@ -52,7 +50,7 @@ app.get("/", (req, res) => {
     mensaje: "funciona!"
   });
 });
-app.use("/api/auth",authRoute);
-app.use("/api/accesos",usuarioRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/accesos", usuarioRoute);
 
 module.exports = app;

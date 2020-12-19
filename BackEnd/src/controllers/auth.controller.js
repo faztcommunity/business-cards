@@ -1,6 +1,6 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const Usuario = db.usuario
+const Usuario = db.usuario;
 const Rol = db.roles;
 
 const jwt = require("jsonwebtoken");
@@ -11,26 +11,23 @@ export const singUp = (req, res) => {
 
   //Guardando el usuario
   Usuario.create({
-      nombres,
-      apellidos,
-      usuario,
-      clave:bcrypt.hashSync(clave, 10),
-      correo 
-    })
+    nombres,
+    apellidos,
+    usuario,
+    clave: bcrypt.hashSync(clave, 10),
+    correo
+  })
     .then(usuario => {
       if (req.body.rol) {
-
         Rol.findAll({
-            where: {
-              nombreRol: req.body.rol
-            }
-          })
-          .then(rol => {
-            usuario.setRoles(rol).then(() => {
-              
-              res.json({ message: "Usuario registrado correctamente" });
-            });
+          where: {
+            nombreRol: req.body.rol
+          }
+        }).then(rol => {
+          usuario.setRoles(rol).then(() => {
+            res.json({ message: "Usuario registrado correctamente" });
           });
+        });
       } else {
         //definiendo  un rol por defecto
         res.json({ message: "Usuariio registrado con rol por defecto : 1" });
@@ -40,8 +37,6 @@ export const singUp = (req, res) => {
       res.status(500).json({ message: err.message });
     });
 };
-
-
 
 export const signIn = (req, res) => {
   Usuario.findOne({
@@ -54,10 +49,7 @@ export const signIn = (req, res) => {
         return res.status(404).send({ message: "Usuario no encontrado." });
       }
 
-      const passwordIsValid = bcrypt.compareSync(
-        req.body.clave,
-        user.clave
-      );
+      const passwordIsValid = bcrypt.compareSync(req.body.clave, user.clave);
 
       if (!passwordIsValid) {
         return res.status(401).send({
@@ -69,7 +61,6 @@ export const signIn = (req, res) => {
       const token = jwt.sign({ id: user.idUsuario }, config.secret, {
         expiresIn: 86400 // 24 horas
       });
-      
 
       const authorities = [];
 
