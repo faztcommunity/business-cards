@@ -1,26 +1,26 @@
 <script>
-  export let primary
-  export { className as class }
+    export let primary
+    export { className as class }
 
-  let className = ''
+    let className = ''
 </script>
 
 <button class="{className}" class:primary on:click>
-  <slot />
+    <slot />
 </button>
 
 <style>
-  button {
-    @apply w-full py-2 font-medium rounded-md outline-none;
-    transition: all 200ms ease-out;
-  }
+    button {
+        @apply w-full py-2 font-medium rounded-md outline-none;
+        transition: all 200ms ease-out;
+    }
 
-  button:active {
-    @apply transform scale-95;
-    transition: all 200ms ease-in;
-  }
+    button:active {
+        @apply transform scale-95;
+        transition: all 200ms ease-in;
+    }
 
-  .primary {
-    @apply text-white bg-blue-700;
-  }
+    .primary {
+        @apply text-white bg-blue-700;
+    }
 </style>

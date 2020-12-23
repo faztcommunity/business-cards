@@ -21,21 +21,17 @@ speed-measure-plugin*.json
 .history/*
 *.code-workspace
 
-# Svelte
-/public/build/
-/public/global.css
+# Sapper
+__sapper__
+/static/global.css
 
 # misc
 .env
 .env.test
-/.sass-cache
 /connect.lock
 /coverage
-/libpeerconnection.log
 npm-debug.log
 yarn-error.log
-testem.log
-/typings
 .vercel/
 
 # System Files

@@ -1,102 +1,166 @@
-import svelte from 'rollup-plugin-svelte'
+import path from 'path'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import livereload from 'rollup-plugin-livereload'
+import replace from '@rollup/plugin-replace'
+import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
+import svelte from 'rollup-plugin-svelte'
+import alias from '@rollup/plugin-alias'
 import sveltePreprocess from 'svelte-preprocess'
 import svelteSVG from 'rollup-plugin-svelte-svg'
-import alias from '@rollup/plugin-alias'
-import path from 'path'
+import config from 'sapper/config/rollup.js'
+import pkg from './package.json'
 
-const production = !process.env.ROLLUP_WATCH
+const mode = process.env.NODE_ENV
+const dev = mode === 'development'
+const legacy = !!process.env.SAPPER_LEGACY_BUILD
+
+const onwarn = (warning, onwarn) =>
+    (warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
+    (warning.code === 'CIRCULAR_DEPENDENCY' &&
+        /[/\\]@sapper[/\\]/.test(warning.message)) ||
+    onwarn(warning)
+
+const preprocess = sveltePreprocess({ postcss: true })
 
 const projectRootDir = path.resolve(__dirname)
 const customResolver = resolve({
-  extensions: ['.mjs', '.js', '.json', '.svelte'],
+    extensions: ['.mjs', '.js', '.json', '.svelte'],
 })
 
 export default {
-  input: 'src/main.js',
-  output: {
-    sourcemap: true,
-    format: 'iife',
-    name: 'app',
-    file: 'public/build/bundle.js',
-  },
-  plugins: [
-    svelte({
-      // enable run-time checks when not in production
-      dev: !production,
-      // we'll extract any component CSS out into
-      // a separate file - better for performance
-      css: (css) => css.write('bundle.css'),
+    client: {
+        input: config.client.input(),
+        output: config.client.output(),
+        plugins: [
+            replace({
+                'process.browser': true,
+                'process.env.NODE_ENV': JSON.stringify(mode),
+            }),
+            svelte({
+                preprocess,
+                compilerOptions: {
+                    dev,
+                    hydratable: true,
+                },
+            }),
+            alias({
+                entries: [
+                    {
+                        find: '@assets',
+                        replacement: path.resolve(projectRootDir, 'src/assets'),
+                    },
+                    {
+                        find: '@components',
+                        replacement: path.resolve(
+                            projectRootDir,
+                            'src/components'
+                        ),
+                    },
+                ],
+                customResolver,
+            }),
+            resolve({
+                browser: true,
+                dedupe: ['svelte'],
+            }),
+            commonjs(),
+            svelteSVG({ dev }),
 
-      preprocess: sveltePreprocess({
-        postcss: true,
-      }),
-    }),
+            legacy &&
+                babel({
+                    extensions: ['.js', '.mjs', '.html', '.svelte'],
+                    babelHelpers: 'runtime',
+                    exclude: ['node_modules/@babel/**'],
+                    presets: [
+                        [
+                            '@babel/preset-env',
+                            {
+                                targets: '> 0.25%, not dead',
+                            },
+                        ],
+                    ],
+                    plugins: [
+                        '@babel/plugin-syntax-dynamic-import',
+                        [
+                            '@babel/plugin-transform-runtime',
+                            {
+                                useESModules: true,
+                            },
+                        ],
+                    ],
+                }),
 
-    alias({
-      entries: [
-        {
-          find: '@assets',
-          replacement: path.resolve(projectRootDir, 'src/assets'),
-        },
-        {
-          find: '@components',
-          replacement: path.resolve(projectRootDir, 'src/components'),
-        },
-        {
-          find: '@pages',
-          replacement: path.resolve(projectRootDir, 'src/pages'),
-        },
-      ],
-      customResolver,
-    }),
+            !dev &&
+                terser({
+                    module: true,
+                }),
+        ],
 
-    // If you have external dependencies installed from
-    // npm, you'll most likely need these plugins. In
-    // some cases you'll need additional configuration -
-    // consult the documentation for details:
-    // https://github.com/rollup/plugins/tree/master/packages/commonjs
-    resolve({
-      browser: true,
-      dedupe: ['svelte'],
-    }),
-
-    commonjs(),
-    svelteSVG(),
-
-    // In dev mode, call `npm run start` once
-    // the bundle has been generated
-    !production && serve(),
-
-    // Watch the `public` directory and refresh the
-    // browser on changes when not in production
-    !production && livereload('public'),
-
-    // If we're building for production (npm run build
-    // instead of npm run dev), minify
-    production && terser(),
-  ],
-  watch: {
-    clearScreen: false,
-  },
-}
-
-function serve() {
-  let started = false
-
-  return {
-    writeBundle() {
-      if (!started) {
-        started = true
-
-        require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-          stdio: ['ignore', 'inherit', 'inherit'],
-          shell: true,
-        })
-      }
+        preserveEntrySignatures: false,
+        onwarn,
     },
-  }
+
+    server: {
+        input: config.server.input(),
+        output: config.server.output(),
+        plugins: [
+            replace({
+                'process.browser': false,
+                'process.env.NODE_ENV': JSON.stringify(mode),
+            }),
+            svelte({
+                preprocess,
+                compilerOptions: {
+                    dev,
+                    generate: 'ssr',
+                    hydratable: true,
+                },
+            }),
+            alias({
+                entries: [
+                    {
+                        find: '@assets',
+                        replacement: path.resolve(projectRootDir, 'src/assets'),
+                    },
+                    {
+                        find: '@components',
+                        replacement: path.resolve(
+                            projectRootDir,
+                            'src/components'
+                        ),
+                    },
+                ],
+                customResolver,
+            }),
+            resolve({
+                dedupe: ['svelte'],
+            }),
+            commonjs(),
+            svelteSVG({ generate: 'ssr', dev }),
+        ],
+        external: Object.keys(pkg.dependencies).concat(
+            require('module').builtinModules
+        ),
+
+        preserveEntrySignatures: 'strict',
+        onwarn,
+    },
+
+    serviceworker: {
+        input: config.serviceworker.input(),
+        output: config.serviceworker.output(),
+        plugins: [
+            resolve(),
+            replace({
+                'process.browser': true,
+                'process.env.NODE_ENV': JSON.stringify(mode),
+            }),
+            commonjs(),
+            !dev && terser(),
+        ],
+
+        preserveEntrySignatures: false,
+        onwarn,
+    },
 }

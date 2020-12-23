@@ -3,9 +3,10 @@
 @import 'tailwindcss/utilities';
 
 :root {
-  font-size: 16px;
+    font-size: 16px;
 }
+
 body {
-  @apply relative min-h-screen font-roboto;
-  -webkit-tap-highlight-color: transparent;
+    @apply relative min-h-screen font-roboto;
+    -webkit-tap-highlight-color: transparent;
 }
