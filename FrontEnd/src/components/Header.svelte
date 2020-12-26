@@ -6,7 +6,7 @@
 <header>
     <nav class="container">
         <div>
-            <Icon class="inline" name="meet-icon" size="48" />
+            <Icon class="inline" name="logo" size="48" />
             <span>Meet</span>
         </div>
 

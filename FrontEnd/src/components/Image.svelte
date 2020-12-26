@@ -1,6 +1,6 @@
 <script>
     export let name
-    export let type = 'png'
+    export let type = 'webp'
     export { className as class }
 
     let className = ''

@@ -1,7 +1,8 @@
 <script>
-    import MeetIcon from '@assets/icons/meet-icon.svg'
-    import Hamburguer from '@assets/icons/hamburguer.svg'
+    import Logo from '@assets/icons/logo.svg'
+    import Share from '@assets/icons/share.svg'
     import Missing from '@assets/icons/missing.svg'
+    import Hamburguer from '@assets/icons/hamburguer.svg'
 
     export let size
     export let color = '#FFF'
@@ -11,9 +12,10 @@
     let className = ''
 
     const ICONS = {
-        'meet-icon': MeetIcon,
-        hamburguer: Hamburguer,
+        logo: Logo,
+        share: Share,
         missing: Missing,
+        hamburguer: Hamburguer,
     }
 </script>
 
